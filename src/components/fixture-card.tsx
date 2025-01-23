@@ -32,20 +32,20 @@ export default function FixtureCard({fixture }: FixtureCardProps) {
     <div className="grid grid-cols-3 gap-4">
 
     <button onClick={() => {handleClick(fixture.teams.home.name)}} 
-            className={`p-4 rounded-lg  text-center shadow hover:bg-gray-200 ${
-            selectedTeam === fixture.teams.home.name ? 'bg-green-200' : 'bg-gray-100'}`}>
+            className={`p-4 rounded-lg  text-center shadow  ${
+            selectedTeam === fixture.teams.home.name ? 'bg-green-200 hover:bg-green-200' : 'bg-gray-100 hover:bg-gray-200'}`}>
       <p className="font-bold text-md">{fixture.teams.home.name}</p>
     </button>
 
     <button onClick={() => {handleClick("Draw")}} 
             className={`p-4 rounded-lg  text-center shadow hover:bg-gray-200 ${
-            selectedTeam === "Draw" ? 'bg-green-200' : 'bg-gray-100'}`}>
+            selectedTeam === "Draw" ? 'bg-green-200 hover:bg-green-200' : 'bg-gray-100 hover:bg-gray-200'}`}>
       <p className="font-bold text-md mx-auto my-auto">Draw</p>
     </button>
 
     <button onClick={() => {handleClick(fixture.teams.away.name)}} 
             className={`p-4 rounded-lg  text-center shadow hover:bg-gray-200 ${
-            selectedTeam === fixture.teams.away.name ? 'bg-green-200' : 'bg-gray-100'}`}>
+            selectedTeam === fixture.teams.away.name ? 'bg-green-200 hover:bg-green-200' : 'bg-gray-100 hover:bg-gray-200'}`}>
       <p className="font-bold text-md">{fixture.teams.away.name}</p>
     </button>
   </div>
