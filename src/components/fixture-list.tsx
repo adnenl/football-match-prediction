@@ -1,41 +1,50 @@
+"use client";
+
+import { useState } from "react";
 import FixtureCard from "./fixture-card";
-// Define the RAPID_API_KEY variable
-const RAPID_API_KEY = process.env.RAPID_API_KEY;
+import { savePrediction } from "@/actions/actions";
 
-export default async function FixtureList() {
-
-const url = 'https://api-football-v1.p.rapidapi.com/v3/fixtures?league=39&season=2024&round=Regular%20Season%20-%2023';
-const options: RequestInit = {
-	method: 'GET',
-	headers: {
-		'x-rapidapi-key': RAPID_API_KEY!,
-		'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
-	},
-};
-	const response = await fetch(url, options);
-	const data = await response.json();
-
-  interface Fixture {
-    // Define the properties of a fixture based on the API response
+interface Fixture {
     id: number;
-    teams: {
-      home: {
-        name: string;
-      };
-      away: {
-        name: string;
-      };
+    homeTeam: string;
+    awayTeam: string;
+    round: string;
     };
-    // Add other properties as needed
-  }
 
-  const fixtures: Fixture[] = data.response;
+interface FixtureListProps {
+    fixtures: Fixture[];
+}
 
-  return (
-    <div>
-            {fixtures.map((fixture: Fixture) => (
-            <FixtureCard key={fixture.id} fixture={fixture} />
-            ))}
-    </div>
-  )
+export default function FixtureList({ fixtures }: FixtureListProps) {
+
+    const [choices, setChoices] = useState<Record<number, string | null>>({});
+
+    const handleChoiceSelect = (fixtureId: number, choice: string | null) => {
+        setChoices((prevChoices) => ({
+            ...prevChoices,
+            [fixtureId]: prevChoices[fixtureId] === choice ? null : choice,
+        }));
+    };
+
+    console.log(choices);
+
+    const handleSubmit = async () => {
+        const result = await savePrediction(choices);
+        console.log(result);
+    }
+    
+
+    return (
+        <div>
+                {fixtures.map((fixture: Fixture) => (
+                <FixtureCard key={fixture.id} 
+                    fixture={fixture} 
+                    onChoiceSelect={handleChoiceSelect} 
+                    selectedChoice={choices[fixture.id] || null} />
+                ))}
+                <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Submit
+                </button>
+        </div>
+    )
 }

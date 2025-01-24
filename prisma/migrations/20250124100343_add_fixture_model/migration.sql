@@ -1,0 +1,22 @@
+-- CreateTable
+CREATE TABLE "Post" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "title" TEXT NOT NULL,
+    "body" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Fixture" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "home" TEXT NOT NULL,
+    "away" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Prediction" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "fixtureId" INTEGER NOT NULL,
+    "prediction" TEXT NOT NULL
+);

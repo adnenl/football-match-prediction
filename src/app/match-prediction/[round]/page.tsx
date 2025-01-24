@@ -3,11 +3,15 @@ import fetchAndSaveFixtures from "@/lib/fetch-fixtures";
 import { prisma } from "@/lib/prisma";
 
 
-export default async function Page() {
+export default async function Page({ params }: {
+    params: { round: string } }) {
     
     await fetchAndSaveFixtures();
 
     const fixtures = await prisma.fixture.findMany({
+        where: {
+            round: `Regular Season - ${params.round}`,
+        },
         select: {
             id: true,
             homeTeam: true,
@@ -31,6 +35,7 @@ export default async function Page() {
 
             
     return (
+
         <FixtureList fixtures={formattedFixtures}/>
     )
 }
