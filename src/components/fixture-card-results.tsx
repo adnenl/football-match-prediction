@@ -22,10 +22,11 @@ interface FixtureCardProps {
     prediction?: Prediction;
   }
 
-export default function FixtureCardResults({fixture, prediction}: FixtureCardProps) {
+export default function FixtureCardResults({ fixture, prediction }: FixtureCardProps) {
 
     const [predictionOutcome, setPredictionOutcome] = useState<string | null>(null);
     const [fixtureResult, setFixtureResult] = useState<string | null>(null);
+    const [isLoaded, setIsLoaded] = useState(false);
 
 
     useEffect(() => {
@@ -57,9 +58,15 @@ export default function FixtureCardResults({fixture, prediction}: FixtureCardPro
 
         checkPrediction();
         checkFixtureResult();
+        setIsLoaded(true);
     }, [fixture, prediction]);
 
     const isFixtureCompleted = fixture.status === "FT";
+
+    if (!isLoaded) {
+        return <div></div>;
+      }
+    
     
     return (
         <div className="container mx-auto p-4 rounded-lg shadow-md bg-white max-w-md">
