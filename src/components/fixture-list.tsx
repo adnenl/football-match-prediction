@@ -9,6 +9,7 @@ interface Fixture {
     homeTeam: string;
     awayTeam: string;
     round: string;
+    status: string;
     };
 
 interface FixtureListProps {
@@ -29,6 +30,9 @@ export default function FixtureList({ fixtures }: FixtureListProps) {
     console.log(choices);
 
     const handleSubmit = async () => {
+        if (Object.keys(choices).length !== fixtures.length) {
+            alert("Please make a prediction for all fixtures");
+        }
         const result = await savePrediction(choices);
         console.log(result);
     }

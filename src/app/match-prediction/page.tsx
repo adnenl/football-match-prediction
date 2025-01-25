@@ -20,17 +20,9 @@ export default async function Page() {
         },
     });
 
-    const formattedFixtures = fixtures.map((fixture) => ({
-        id: fixture.id,
-        homeTeam: fixture.homeTeam,
-        awayTeam: fixture.awayTeam,
-        round: fixture.round,
-    }));
-
-    console.log(formattedFixtures);
 
             
     return (
-        <FixtureList fixtures={formattedFixtures}/>
+        <FixtureList fixtures={fixtures}/>
     )
 }

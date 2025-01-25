@@ -1,4 +1,5 @@
 import FixtureList from "@/components/fixture-list";
+import FixtureListResults from "@/components/fixture-list-results";
 import fetchAndSaveFixtures from "@/lib/fetch-fixtures";
 import { prisma } from "@/lib/prisma";
 
@@ -6,8 +7,6 @@ import { prisma } from "@/lib/prisma";
 export default async function Page({ params }: {
     params: { round: string } }) {
     
-    await fetchAndSaveFixtures();
-
     const fixtures = await prisma.fixture.findMany({
         where: {
             round: `Regular Season - ${params.round}`,
@@ -24,10 +23,24 @@ export default async function Page({ params }: {
         },
     });
 
+    const predictions = await prisma.prediction.findMany({
+        where: {
+            fixtureId: {
+                in: fixtures.map((fixture) => fixture.id),
+            } 
+        },
+        select: {
+            id: true,
+            fixtureId: true,
+            predictedResult: true,
+        },
+    });
+
+
 
             
     return (
 
-        <FixtureList fixtures={fixtures}/>
+        <FixtureListResults fixtures={fixtures} predictions={predictions}/>
     )
 }
