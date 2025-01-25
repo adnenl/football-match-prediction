@@ -25,6 +25,8 @@ interface FixtureCardProps {
 export default function FixtureCardResults({fixture, prediction}: FixtureCardProps) {
 
     const [predictionOutcome, setPredictionOutcome] = useState<string | null>(null);
+    const [fixtureResult, setFixtureResult] = useState<string | null>(null);
+
 
     useEffect(() => {
         const checkPrediction = () => {
@@ -41,7 +43,20 @@ export default function FixtureCardResults({fixture, prediction}: FixtureCardPro
           }
         };
 
+        const checkFixtureResult = () => {
+            if (fixture.status === "FT" && fixture.homeGoals !== null && fixture.awayGoals !== null) {
+                if (fixture.homeGoals > fixture.awayGoals) {
+                    setFixtureResult("Home");
+                } else if (fixture.homeGoals < fixture.awayGoals) {
+                    setFixtureResult("Away");
+                } else {
+                    setFixtureResult("Draw");
+                }
+                }
+            };
+
         checkPrediction();
+        checkFixtureResult();
     }, [fixture, prediction]);
 
     const isFixtureCompleted = fixture.status === "FT";
@@ -50,7 +65,9 @@ export default function FixtureCardResults({fixture, prediction}: FixtureCardPro
         <div className="container mx-auto p-4 rounded-lg shadow-md bg-white max-w-md">
         <div className="grid grid-cols-3 gap-4">
         {["Home", "Draw", "Away"].map((resultType) => {
-          const isCorrect = isFixtureCompleted && predictionOutcome === resultType;
+            
+        const isCorrectResult = isFixtureCompleted && fixtureResult === resultType;
+          const isCorrectPrediction = isFixtureCompleted && predictionOutcome === resultType;
           const isWrongPrediction = 
             isFixtureCompleted &&
             prediction && 
@@ -58,13 +75,13 @@ export default function FixtureCardResults({fixture, prediction}: FixtureCardPro
               (resultType === "Home" ? fixture.homeTeam : 
                resultType === "Away" ? fixture.awayTeam : 
                "Draw") && 
-            !isCorrect;
+            !isCorrectPrediction;
         
           return (
             <button
               key={resultType}
               className={`p-4 rounded-lg text-center shadow ${
-                isCorrect 
+                isCorrectResult
                   ? 'bg-green-200' 
                   : isWrongPrediction 
                     ? 'bg-red-200' 
